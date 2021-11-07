@@ -2,9 +2,8 @@
 #include <iostream>
 #include <vector>
 
-#include "call_stack_lib.h"
 #include "callStack.h"
-
+#include "call_stack_lib.h"
 
 class A {
 public:
@@ -21,12 +20,6 @@ public:
         A::foo();
     }
 };
-
-/* uint32_t fibonacci2(uint32_t n) {
-    if (n <= 1)
-        return n;
-    return fibonacci2(n - 1) + fibonacci2(n - 2);
-} */
 
 void print() {
     std::cout << "empty function, called last.\n";
