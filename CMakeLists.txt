@@ -20,7 +20,14 @@ set(CMAKE_CXX_STANDARD 17)
 #                OUTPUT_VARIABLE CPP_STD_INC)
 #message(STATUS ${CPP_STD_INC})
 
-set(CPP_STD_INCLUDES "/usr/include,/usr/include/c++/5,/usr/include/c++/5/backward,/usr/include/x86_64-linux-gnu,/usr/include/x86_64-linux-gnu/c++/5,/usr/lib/gcc/x86_64-linux-gnu/5/include,/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed,/usr/lib/gcc/x86_64-linux-gnu/7/include,/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed,/usr/local/include,app/callStack.h,app/unwinder.h,app/types.h,app/format.h,app/prettyTime.h")
+string(CONCAT cpp_std_inc_str
+    "/usr/include,/usr/include/c++/5,/usr/include/c++/5/backward,/usr/include/x86_64-linux-gnu,"
+    "/usr/include/x86_64-linux-gnu/c++/5,/usr/lib/gcc/x86_64-linux-gnu/5/include,/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed,"
+    "/usr/lib/gcc/x86_64-linux-gnu/7/include,/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed,/usr/local/include,app/callStack.h,"
+    "app/unwinder.h,app/types.h,app/format.h,app/prettyTime.h"
+)
+
+set(CPP_STD_INCLUDES "${cpp_std_inc_str}")
 
 set(CMAKE_C_FLAGS "-O0 -g -Wall -rdynamic -std=c++17 -finstrument-functions -fPIC ${CMAKE_C_FLAGS} -finstrument-functions-exclude-file-list=${CPP_STD_INCLUDES}")
 set(CMAKE_CXX_FLAGS "-O0 -g -Wall -rdynamic -std=c++17 -finstrument-functions -fPIC ${CMAKE_CXX_FLAGS} -finstrument-functions-exclude-file-list=${CPP_STD_INCLUDES}")
