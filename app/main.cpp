@@ -7,54 +7,57 @@
 
 class A {
 public:
-    static void foo() { std::cout << "static foo \n"; }
+  static void foo() {
+    std::cout << "static foo \n";
+  }
 };
 
 class B {
 public:
-    B() { std::cout << "constructing B ...\n"; };
-    void foo() {
-        std::cout << "non-static foo \n";
-        std::vector<int> vec{ 1, 55, 78, 3, 11, 7, 90 };
-        std::sort(vec.begin(), vec.end());
-        A::foo();
-    }
+  B() {
+    std::cout << "constructing B ...\n";
+  };
+  void foo() {
+    std::cout << "non-static foo \n";
+    std::vector<int> vec{1, 55, 78, 3, 11, 7, 90};
+    std::sort(vec.begin(), vec.end());
+    A::foo();
+  }
 };
 
 void print() {
-    std::cout << "empty function, called last.\n";
+  std::cout << "empty function, called last.\n";
 }
 
-template <typename T, typename... Types>
-void print(T var1, Types... var2) {
-    std::cout << var1 << std::endl;
-    print(var2...);
+template <typename T, typename... Types> void print(T var1, Types... var2) {
+  std::cout << var1 << std::endl;
+  print(var2...);
 }
 
 inline int cube(int s) {
-    return s * s * s;
+  return s * s * s;
 }
 
 int main() {
-    // Test logging static member methods.
-    A::foo();
+  // Test logging static member methods.
+  A::foo();
 
-    // Test logging lambdas
-    auto isLessThan = [](auto a, auto b) { return a < b; };
-    bool out = isLessThan(3, 3.14);
-    std::cout << "isLessThan: " << std::boolalpha << out << std::endl;
+  // Test logging lambdas
+  auto isLessThan = [](auto a, auto b) { return a < b; };
+  bool out = isLessThan(3, 3.14);
+  std::cout << "isLessThan: " << std::boolalpha << out << std::endl;
 
-    // Test logging user-defined default constructor
-    B b;
-    // Test logging non-static member methods with calls to std
-    // functions/containers (which should not be instrumented).
-    b.foo();
-    // Test logging constexpr function
-    fibonacci(6);
-    // Test logging variadic function templates
-    print(44, 3.14159, "whatever\n");
-    // Test logging inline function
-    cube(3);
+  // Test logging user-defined default constructor
+  B b;
+  // Test logging non-static member methods with calls to std
+  // functions/containers (which should not be instrumented).
+  b.foo();
+  // Test logging constexpr function
+  fibonacci(6);
+  // Test logging variadic function templates
+  print(44, 3.14159, "whatever\n");
+  // Test logging inline function
+  cube(3);
 
-    return 0;
+  return 0;
 }

@@ -54,7 +54,7 @@
 #include <vector>
 
 #ifndef NO_INSTRUMENT
-    #define NO_INSTRUMENT __attribute__((no_instrument_function))
+#define NO_INSTRUMENT __attribute__((no_instrument_function))
 #endif
 
 namespace instrumentation {
@@ -67,42 +67,42 @@ namespace instrumentation {
  */
 struct bfdResolver {
 public:
-    /// @brief relevant information belonging to a single bfd
-    struct storedBfd {
-        typedef bfd_boolean(deleter_t)(bfd*);
-        std::unique_ptr<bfd, deleter_t*> abfd;
-        std::unique_ptr<asymbol*[]> symbols;
-        intptr_t offset;
+  /// @brief relevant information belonging to a single bfd
+  struct storedBfd {
+    typedef bfd_boolean(deleter_t)(bfd *);
+    std::unique_ptr<bfd, deleter_t *> abfd;
+    std::unique_ptr<asymbol *[]> symbols;
+    intptr_t offset;
 
-        storedBfd(bfd* _abfd, deleter_t* _del) : abfd(_abfd, _del) {}
-    };
+    storedBfd(bfd *_abfd, deleter_t *_del) : abfd(_abfd, _del) {
+    }
+  };
 
-    NO_INSTRUMENT
-    static bool ensure_bfd_loaded(Dl_info& _info);
+  NO_INSTRUMENT
+  static bool ensure_bfd_loaded(Dl_info &_info);
 
-    NO_INSTRUMENT
-    static std::optional<ResolvedFrame> resolve(void* callee_address, void* caller_address);
+  NO_INSTRUMENT
+  static std::optional<ResolvedFrame> resolve(void *callee_address, void *caller_address);
 
 private:
-    NO_INSTRUMENT
-    static std::optional<std::string> resolve_function_name(void* callee_address);
+  NO_INSTRUMENT
+  static std::optional<std::string> resolve_function_name(void *callee_address);
 
-    NO_INSTRUMENT
-    static std::pair<std::string, std::optional<unsigned int>> resolve_filename_and_line(
-            void* caller_address);
+  NO_INSTRUMENT
+  static std::pair<std::string, std::optional<unsigned int>> resolve_filename_and_line(void *caller_address);
 
-    NO_INSTRUMENT
-    static void check_bfd_initialized();
+  NO_INSTRUMENT
+  static void check_bfd_initialized();
 
-    NO_INSTRUMENT
-    static std::string get_argv0();
+  NO_INSTRUMENT
+  static std::string get_argv0();
 
-    NO_INSTRUMENT
-    static void ensure_actual_executable(Dl_info& symbol_info);
+  NO_INSTRUMENT
+  static void ensure_actual_executable(Dl_info &symbol_info);
 
-    inline static std::map<void*, storedBfd> s_bfds = {};
-    inline static bool s_bfd_initialized = false;
-    inline static std::string s_argv0 = get_argv0();
+  inline static std::map<void *, storedBfd> s_bfds = {};
+  inline static bool s_bfd_initialized = false;
+  inline static std::string s_argv0 = get_argv0();
 };
 
 /**
@@ -118,6 +118,6 @@ std::vector<std::optional<ResolvedFrame>> get_call_stack();
  * @brief Returns std::string with human-readable information about the function which pointer is passed.
  */
 NO_INSTRUMENT
-std::optional<ResolvedFrame> resolve(void* callee_address, void* caller_address);
+std::optional<ResolvedFrame> resolve(void *callee_address, void *caller_address);
 
 } // namespace instrumentation
