@@ -13,7 +13,7 @@ static bool last_frame_was_resolved = false;
 __attribute__ ((constructor))
 NO_INSTRUMENT
 void trace_begin() {
-    fp_trace = fopen("trace.out", "a");
+    fp_trace = fopen("trace.log", "a");
 }
 
 __attribute__ ((destructor))

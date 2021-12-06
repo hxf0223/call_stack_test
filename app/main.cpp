@@ -1,63 +1,30 @@
 #include <algorithm>
 #include <iostream>
+#include <stdlib.h>
+#include <unistd.h>
 #include <vector>
 
+#include <dmlc/logging.h>
+#include <tvm/runtime/packed_func.h>
+#include <tvm/runtime/registry.h>
+
 #include "callStack.h"
-#include "call_stack_lib.h"
-
-class A {
-public:
-  static void foo() {
-    std::cout << "static foo \n";
-  }
-};
-
-class B {
-public:
-  B() {
-    std::cout << "constructing B ...\n";
-  };
-  void foo() {
-    std::cout << "non-static foo \n";
-    std::vector<int> vec{1, 55, 78, 3, 11, 7, 90};
-    std::sort(vec.begin(), vec.end());
-    A::foo();
-  }
-};
-
-void print() {
-  std::cout << "empty function, called last.\n";
-}
-
-template <typename T, typename... Types> void print(T var1, Types... var2) {
-  std::cout << var1 << std::endl;
-  print(var2...);
-}
-
-inline int cube(int s) {
-  return s * s * s;
-}
 
 int main() {
-  // Test logging static member methods.
-  A::foo();
+  using namespace tvm;
+  using namespace tvm::runtime;
 
-  // Test logging lambdas
-  auto isLessThan = [](auto a, auto b) { return a < b; };
-  bool out = isLessThan(3, 3.14);
-  std::cout << "isLessThan: " << std::boolalpha << out << std::endl;
+  auto conn_ep = tvm::runtime::Registry::Get("rpc.Connect");
+  tvm::runtime::Module conn_m = (*conn_ep)("192.168.33.205", 9096, "");
+  sleep(5);
 
-  // Test logging user-defined default constructor
-  B b;
-  // Test logging non-static member methods with calls to std
-  // functions/containers (which should not be instrumented).
-  b.foo();
-  // Test logging constexpr function
-  fibonacci(6);
-  // Test logging variadic function templates
-  print(44, 3.14159, "whatever\n");
-  // Test logging inline function
-  cube(3);
+  tvm::runtime::PackedFunc test_func = conn_m.GetFunction("test.rpc.string");
+  sleep(5);
 
+  std::string ret_str = test_func(std::string("this is a test string."));
+  sleep(5);
+
+  // LOG(INFO) << "output: " << ret_str;
+  sync();
   return 0;
 }

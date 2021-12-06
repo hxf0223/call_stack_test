@@ -1,6 +1,4 @@
 cmake_minimum_required(VERSION 3.2)
-
-
 project(call_stack_test C CXX)
 
 
@@ -8,7 +6,8 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_STANDARD 17)
-
+include("${PROJECT_SOURCE_DIR}/cmake/build_type.cmake")
+add_definitions(-DDMLC_USE_LOGGING_LIBRARY=<tvm/runtime/logging.h>)
 
 #execute_process(COMMAND	"sh -c `gcc -print-prog-name=cc1plus` -v < /dev/null 2>&1
 #								| LC_ALL=C sed -ne '/starts here/,/End of/p'
@@ -37,6 +36,7 @@ SET(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin")
 SET(LIBRARY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/lib")
 
 include_directories("${PROJECT_SOURCE_DIR}/app")
+include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/call_stack_lib")
 link_directories("${PROJECT_SOURCE_DIR}/lib")
 
